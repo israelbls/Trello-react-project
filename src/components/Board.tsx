@@ -6,32 +6,33 @@ import AddTask from "./AddTask";
 
 interface Props {
   name: string;
+  id: string;
   tasks: {
     title: string;
     description: string;
     editMode?: boolean;
   }[];
-  handleNewTask?: () => void;
-  handelEdit?: () => void;
+  onAdd: (boardId: string, title: string, description: string) => void;
+  onSave?: () => void;
 }
 
-function Board({ name, tasks, handleNewTask, handelEdit }: Props) {
+function Board({ name, id, tasks, onAdd, onSave }: Props) {
   return (
     <Card
       sx={{
-        borderRadius: 3, // Reduced from 5
-        width: "250px", // Set explicit width (was "300")
-        blockSize: "xs", // Changed from "sm"
+        borderRadius: 3,
+        minWidth: "150px",
+        width: "250px",
+        blockSize: "xs",
         height: "fit-content",
         boxShadow: "sm",
         bgcolor: "background.level1",
-        maxHeight: "80vh", // Added max height
-        overflow: "auto", // Added scrolling for overflow
+        maxHeight: "80vh",
+        overflow: "auto",
       }}
     >
       <CardContent>
         <Typography level="title-md">{name}</Typography>{" "}
-        {/* Changed from title-lg */}
       </CardContent>
       {tasks.map((task, index) => {
         return (
@@ -40,8 +41,8 @@ function Board({ name, tasks, handleNewTask, handelEdit }: Props) {
       })}
       <AddTask
         editMode={false}
-        onAdd={handleNewTask}
-        onSave={handelEdit}
+        onAdd={(title, description) => onAdd(id, title, description)}
+        onSave={() => onSave?.bind(id)}
       ></AddTask>
     </Card>
   );

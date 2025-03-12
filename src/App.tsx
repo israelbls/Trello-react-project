@@ -17,6 +17,20 @@ interface BoardType {
 function App() {
   const [state, setState] = useState<BoardType[]>([]);
 
+  const handleNewTask = (id: string, title: string, description: string) => {
+    setState(
+      state.map((b) =>
+        b.id === id
+          ? {
+              ...b,
+              tasks: [...b.tasks, { title, description, editMode: true }],
+            }
+          : b
+      )
+    );
+    console.log(state);
+  };
+
   useEffect(() => {
     setState(testData.boards);
   }, []);
@@ -29,7 +43,7 @@ function App() {
       <Box
         sx={{
           display: "flex",
-          gap: 2,
+          gap: 1,
           overflowX: "scroll",
           p: 2,
           minHeight: "100vh",
@@ -38,7 +52,13 @@ function App() {
         }}
       >
         {state.map((board) => (
-          <Board key={board.id} name={board.name} tasks={board.tasks} />
+          <Board
+            key={board.id}
+            id={board.id}
+            name={board.name}
+            tasks={board.tasks}
+            onAdd={handleNewTask}
+          />
         ))}
       </Box>
     </Box>

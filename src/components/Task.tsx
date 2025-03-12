@@ -14,13 +14,17 @@ function Task({ title, description }: Props) {
       size="sm"
       sx={{
         bgcolor: "background.surface",
-        borderRadius: 5,
-        mb: 1,
+        borderRadius: 3, // Reduced from 5
+        p: 0.5, // Added smaller padding
       }}
     >
-      <CardContent>
+      <CardContent sx={{ p: 1 }}>
+        {" "}
+        {/* Reduced padding */}
         <Typography level="title-sm">{title}</Typography>
-        <Typography level="body-xs">{description}</Typography>
+        <Typography level="body-xs" sx={{ fontSize: "0.75rem" }}>
+          {description}
+        </Typography>
       </CardContent>
     </Card>
   );

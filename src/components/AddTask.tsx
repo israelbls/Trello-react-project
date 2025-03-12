@@ -14,6 +14,7 @@ function AddTask({ editMode, onAdd, onSave }: Props) {
   const [description, setDescription] = useState("");
 
   const handleSubmit = () => {
+    if (!title) return;
     if (editMode && onSave) {
       onSave(title, description);
     } else if (onAdd) {
