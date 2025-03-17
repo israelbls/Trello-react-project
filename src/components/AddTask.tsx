@@ -1,28 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "@mui/joy/Input";
 import Stack from "@mui/joy/Stack";
 import Button from "@mui/joy/Button";
 
 interface Props {
   editMode: boolean;
+  initialTitle?: string;
+  initialDescription?: string;
   onAdd?: (title: string, description: string) => void;
   onSave?: (title: string, description: string) => void;
 }
 
-function AddTask({ editMode, onAdd, onSave }: Props) {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+function AddTask({
+  editMode,
+  initialTitle = "",
+  initialDescription = "",
+  onAdd,
+  onSave,
+}: Props) {
+  const [title, setTitle] = useState(initialTitle);
+  const [description, setDescription] = useState(initialDescription);
+
+  useEffect(() => {
+    setTitle(initialTitle);
+    setDescription(initialDescription);
+  }, [initialTitle, initialDescription]);
 
   const handleSubmit = () => {
     if (!title) return;
+
     if (editMode && onSave) {
       onSave(title, description);
     } else if (onAdd) {
       onAdd(title, description);
-    }
 
-    setTitle("");
-    setDescription("");
+      setTitle("");
+      setDescription("");
+    }
   };
 
   const inputStyle = {
@@ -49,7 +63,18 @@ function AddTask({ editMode, onAdd, onSave }: Props) {
   };
 
   return (
-    <Stack spacing={2}>
+    <Stack
+      spacing={2}
+      sx={
+        editMode
+          ? {
+              bgcolor: "background.surface",
+              borderRadius: 3,
+              p: 0.5,
+            }
+          : {}
+      }
+    >
       <Input
         placeholder="Title"
         variant="soft"
